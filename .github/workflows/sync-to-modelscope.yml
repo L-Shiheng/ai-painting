@@ -12,10 +12,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Sync to ModelScope Studio
-        uses: xiaoyao9184/modelscope-sync-action@main
-        with:
-          modelscope_repo_id: 'shengluo01/ai-painting'
-          modelscope_token: ${{ secrets.MODELSCOPE_TOKEN }}
-          repo_type: 'studio'
-          sdk_type: 'gradio'
+      - name: Push to ModelScope
+        env:
+          MS_TOKEN: ${{ secrets.MODELSCOPE_TOKEN }}
+        run: |
+          # 配置 Git 用户信息
+          git config --global user.email "action@github.com"
+          git config --global user.name "GitHub Action"
+          
+          # 添加魔搭仓库地址，使用 Token 进行 HTTP 认证
+          # 注意：这里的 shengluo01 和 ai-painting 替换成你自己的
+          git remote add modelscope https://shengluo01:${MS_TOKEN}@www.modelscope.cn/studios/shengluo01/ai-painting.git
+          
+          # 强制推送当前代码到魔搭的 main 分支
+          git push modelscope main -f
