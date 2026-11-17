@@ -15,7 +15,7 @@ jobs:
       - name: Sync to ModelScope Studio
         uses: xiaoyao9184/modelscope-sync-action@main
         with:
-          modelscope_repo_id: '你的魔搭用户名/你的创空间名称'
+          modelscope_repo_id: 'shengluo01/ai-painting'
           modelscope_token: ${{ secrets.MODELSCOPE_TOKEN }}
           repo_type: 'studio'
           sdk_type: 'gradio'
