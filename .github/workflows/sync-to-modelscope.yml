@@ -9,12 +9,12 @@ jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout GitHub Repo
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          path: github_repo # 将 GitHub 代码下载到 github_repo 目录
 
-      - name: Push to ModelScope (sync branch)
+      - name: Sync files and Push
         env:
           MS_TOKEN: ${{ secrets.MODELSCOPE_TOKEN }}
         run: |
@@ -22,7 +22,19 @@ jobs:
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
 
-          # 关键改动：推送到 github-sync 分支，而不是 master
-          git push --force \
-            https://oauth2:${MS_TOKEN}@www.modelscope.cn/studios/shengluo01/ai-painting.git \
-            HEAD:github-sync
+          # 1. 克隆 ModelScope 的仓库 (这里使用你在 Secrets 中配置的真实 Token)
+          git clone https://oauth2:${MS_TOKEN}@www.modelscope.cn/studios/shengluo01/ai-painting.git ms_repo
+          
+          # 2. 将 GitHub 仓库的文件同步到 ModelScope 仓库中（排除 .git 目录）
+          # 使用 rsync 可以完美覆盖同名文件，并保留 ModelScope 平台独有的配置文件
+          rsync -av --exclude='.git' github_repo/ ms_repo/
+          
+          # 3. 进入 ModelScope 仓库目录进行提交
+          cd ms_repo
+          git add .
+          
+          # 4. 提交更改（如果文件没有变化，则跳过 commit 避免报错）
+          git commit -m "Auto sync from GitHub: ${{ github.sha }}" || echo "No changes to commit"
+          
+          # 5. 执行普通 push (不带 --force)
+          git push origin master
