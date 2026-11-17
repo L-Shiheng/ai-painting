@@ -1,0 +1,8 @@
+gradio>=4.44
+diffusers>=0.30
+transformers>=4.40
+accelerate
+safetensors
+Pillow
+opencv-python-headless
+numpy
