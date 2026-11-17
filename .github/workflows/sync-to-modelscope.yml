@@ -12,18 +12,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # 关键修复：获取完整的 Git 历史，防止 shallow update 报错
+          fetch-depth: 0
 
       - name: Push to ModelScope
         env:
           MS_TOKEN: ${{ secrets.MODELSCOPE_TOKEN }}
         run: |
-          # 配置 Git 用户信息
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
           
-          # 添加魔搭远程仓库
-          git remote add modelscope https://oauth2:${MS_TOKEN}@www.modelscope.cn/studios/shengluo01/ai-painting.git
-          
-          # 推送到魔搭
-          git push modelscope main -f
+          # 直接把当前 commit 强制推送到魔搭的 master 分支
+          # 格式为：HEAD:master
+          git push -f https://oauth2:${MS_TOKEN}@www.modelscope.cn/studios/shengluo01/ai-painting.git HEAD:master
