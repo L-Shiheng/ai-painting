@@ -5,4 +5,6 @@ accelerate
 safetensors
 Pillow
 opencv-python-headless
-numpy
+numpy==1.26.4
+scipy==1.13.1
+scikit-learn==1.4.2
