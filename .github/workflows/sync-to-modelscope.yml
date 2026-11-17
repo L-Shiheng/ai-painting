@@ -18,8 +18,11 @@ jobs:
         env:
           MS_TOKEN: ${{ secrets.MODELSCOPE_TOKEN }}
         run: |
+          set -e
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
-          
-          # 去掉 -f 强制推送，改为正常推送
-          git push https://oauth2:${MS_TOKEN}@www.modelscope.cn/studios/shengluo01/ai-painting.git HEAD:master
+
+          # 用 GitHub 当前提交强制覆盖 ModelScope 的 master 分支
+          git push --force \
+            https://oauth2:${MS_TOKEN}@www.modelscope.cn/studios/shengluo01/ai-painting.git \
+            HEAD:master
