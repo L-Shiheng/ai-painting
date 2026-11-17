@@ -14,7 +14,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Push to ModelScope
+      - name: Push to ModelScope (sync branch)
         env:
           MS_TOKEN: ${{ secrets.MODELSCOPE_TOKEN }}
         run: |
@@ -22,7 +22,7 @@ jobs:
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
 
-          # 用 GitHub 当前提交强制覆盖 ModelScope 的 master 分支
+          # 关键改动：推送到 github-sync 分支，而不是 master
           git push --force \
             https://oauth2:${MS_TOKEN}@www.modelscope.cn/studios/shengluo01/ai-painting.git \
-            HEAD:master
+            HEAD:github-sync
