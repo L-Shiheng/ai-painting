@@ -1,0 +1,21 @@
+name: Sync to ModelScope
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Sync to ModelScope Studio
+        uses: xiaoyao9184/modelscope-sync-action@main
+        with:
+          modelscope_repo_id: '你的魔搭用户名/你的创空间名称'
+          modelscope_token: ${{ secrets.MODELSCOPE_TOKEN }}
+          repo_type: 'studio'
+          sdk_type: 'gradio'
