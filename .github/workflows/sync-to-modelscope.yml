@@ -21,6 +21,5 @@ jobs:
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
           
-          # 直接把当前 commit 强制推送到魔搭的 master 分支
-          # 格式为：HEAD:master
-          git push -f https://oauth2:${MS_TOKEN}@www.modelscope.cn/studios/shengluo01/ai-painting.git HEAD:master
+          # 去掉 -f 强制推送，改为正常推送
+          git push https://oauth2:${MS_TOKEN}@www.modelscope.cn/studios/shengluo01/ai-painting.git HEAD:master
